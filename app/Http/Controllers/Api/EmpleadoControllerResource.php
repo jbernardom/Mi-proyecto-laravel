@@ -3,75 +3,60 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Empleado;
 use Illuminate\Http\Request;
 
 class EmpleadoControllerResource extends Controller
 {
-
-    public $manager;
-    function _construct(){
-
-        $this->manager = new Empleado();
-    }
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json($this->manager->listarEmpleado);
+        $empleados = Empleado::all(); // Obtener todos los empleados
+
+        return response()->json($empleados);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        dd($request);
-        $registro = $this->manager->guardarBd($request);
-        return response()->json($registro);
+        // Crear un nuevo registro con los datos del request
+        $empleado = Empleado::create($request->all());
 
+        return response()->json($empleado, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-         return response()->json($this->manager->buscarEmpleado($id));
+        $empleado = Empleado::find($id);
+
+        if (!$empleado) {
+            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }
+
+        return response()->json($empleado);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
+        $empleado = Empleado::find($id);
 
-        $result = $this->manager->actualizarEmpleado($request, $id);
-        return response()->json($result);
+        if (!$empleado) {
+            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }
+
+        $empleado->update($request->all());
+
+        return response()->json($empleado);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $result = $this->manager->eliminarEmpleado($id);
-        return response()->json($result);
+        $empleado = Empleado::find($id);
+
+        if (!$empleado) {
+            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }
+
+        $empleado->delete();
+
+        return response()->json(['message' => 'Empleado eliminado']);
     }
 }
