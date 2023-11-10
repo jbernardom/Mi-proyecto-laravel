@@ -18,4 +18,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('empleado', 'App\Http\Controllers\Api\EmpleadoControllerResource');
+Route::resource('empleado', 'App\Http\Controllers\Api\EmpleadoControllerResource')->middleware('auth:sanctum');
