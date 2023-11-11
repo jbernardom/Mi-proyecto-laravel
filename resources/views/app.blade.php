@@ -41,7 +41,25 @@
             <li><a href="http://127.0.0.1:8000/nosotros">Nosotros</a></li>
             <li><a href="http://127.0.0.1:8000/productos">Productos</a></li>
             <li><a href="http://127.0.0.1:8000/cotizar">Cotizar</a></li>
-             <li><a href="http://127.0.0.1:8000/empleado">Crud</a></li>
+            <li><a href="http://127.0.0.1:8000/empleado">Crud</a></li>
+            @auth
+                <li style="padding:7px">
+                <form method="POST" action="{{ route('logout') }}" style="all: initial; margin:0; padding:0;">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Cerrar sesion') }}
+                    </x-responsive-nav-link>
+                </form>
+            @else
+                <li><a href="http://127.0.0.1:8000/login">Iniciar sesion</a></li>
+                <li><a href="http://127.0.0.1:8000/register">Registrarse</a></li>
+            @endauth
+
+
+
+</li>
 
         </ul>
     </nav>
